@@ -1,0 +1,42 @@
+# Install necessary libraries
+!pip install transformers
+!pip install torch
+!pip install moviepy
+!pip install librosa
+!pip install pydub
+
+# Step 1: Convert Video to Audio
+import moviepy.editor as mp
+
+video_file = "cyclone.mp4"  # Replace with your video file
+video = mp.VideoFileClip(video_file)
+audio_file = "extracted_audio.wav"
+video.audio.write_audiofile(audio_file)
+
+# Step 2: Load and Transcribe Audio Using wav2vec 2.0
+import torch
+from transformers import Wav2Vec2ForCTC, Wav2Vec2Tokenizer
+import librosa
+
+# Load pre-trained model and tokenizer
+tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
+model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
+
+# Load the audio file and prepare input
+audio_input, _ = librosa.load(audio_file, sr=16000)
+input_values = tokenizer(audio_input, return_tensors="pt").input_values
+
+# Perform inference
+with torch.no_grad():
+    logits = model(input_values).logits
+
+# Decode the logits to get the transcription
+predicted_ids = torch.argmax(logits, dim=-1)
+transcription = tokenizer.decode(predicted_ids[0])
+
+# Step 3: Save the Transcription to a File
+subtitle_file = "subtitles.txt"
+with open(subtitle_file, "w") as f:
+    f.write(transcription)
+
+print(f"Transcription completed and saved to {subtitle_file}")
