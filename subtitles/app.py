@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, redirect
 import moviepy.editor as mp
 from speech_recognition import Recognizer, AudioFile
+import math
 
 app = Flask(__name__)
 
@@ -15,25 +16,46 @@ if not os.path.exists(UPLOAD_FOLDER):
 def index():
     return render_template('index.html')
 
-# Function to extract audio and convert it to text
+# Function to process video and convert it to audio chunks, then transcribe each chunk
 def video_to_audio_text(video_path):
     recognizer = Recognizer()
 
     # Extract audio from video
     video = mp.VideoFileClip(video_path)
-    audio_path = "extracted_audio.wav"
-    video.audio.write_audiofile(audio_path)
-    video.close()  # Ensure video file is closed after extracting audio
+    duration = video.duration  # Get video duration in seconds
 
-    # Convert audio to text
-    with AudioFile(audio_path) as source:
-        audio = recognizer.record(source)
-        text = recognizer.recognize_google(audio)
+    # Define chunk size (in seconds) to break video into smaller pieces, e.g., 10 seconds per chunk
+    chunk_size = 10
+    overlap = 1  # Define 1 second overlap between chunks
+    num_chunks = math.ceil(duration / chunk_size)
+
+    transcript = ""
     
-    # Clean up the audio file after processing
-    os.remove(audio_path)
+    for i in range(num_chunks):
+        start_time = max(i * chunk_size - overlap, 0)  # Ensure start_time is not negative
+        end_time = min((i + 1) * chunk_size, duration)
+
+        # Extract a segment of the video (from start_time to end_time)
+        video_chunk = video.subclip(start_time, end_time)
+        audio_chunk_path = f"audio_chunk_{i}.wav"
+        video_chunk.audio.write_audiofile(audio_chunk_path)
+
+        # Process the audio chunk
+        with AudioFile(audio_chunk_path) as source:
+            audio_data = recognizer.record(source)
+            try:
+                text = recognizer.recognize_google(audio_data)
+                transcript += text + " "
+                print(f"Processed chunk {i}: {text}")
+            except Exception as e:
+                print(f"Error processing chunk {i}: {e}")
+        
+        # Clean up the audio chunk file
+        os.remove(audio_chunk_path)
+
+    video.close()  # Close the video file after processing
     
-    return text
+    return transcript
 
 # Route to handle video upload
 @app.route('/upload', methods=['POST'])
