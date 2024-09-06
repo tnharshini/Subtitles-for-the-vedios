@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video to Subtitles</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Video to Subtitles Converter</h1>
+    </header>
+
+    <div class="container">
+        <h2>Upload Video to Extract Subtitles</h2>
+
+        <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data" onsubmit="showProcessingMessage()">
+            <!-- Style file input directly -->
+            <input id="video" type="file" name="video" accept="video/*" required>
+            <br>
+            <input type="submit" value="Upload Video">
+        </form>
+
+        <p id="processingMessage" style="display:none;">Processing, please wait...</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Video to Subtitles Converter. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showProcessingMessage() {
+            document.getElementById('processingMessage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

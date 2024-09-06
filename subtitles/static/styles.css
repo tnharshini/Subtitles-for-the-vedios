@@ -1,0 +1,132 @@
+/* General page styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('/static/background1.jpg'); /* Add your preferred background image */
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+/* Header styles */
+header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1em;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #fff;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+/* Container styles for index.html */
+.container {
+    background-color: rgba(0, 0, 0, 0.2); /* More transparency for index.html */
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0);
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    margin-top: 5em;
+}
+
+h2 {
+    color: #fff;
+    font-size: 2em;
+    margin-bottom: 1.5em;
+}
+
+/* Style the file input to look like a button */
+input[type="file"] {
+    display: inline-block;
+    padding: 0.75em 2em;
+    background-color: #421f44;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    position:relative;
+    margin: 1em 0;
+    width:200px;
+    text-align: center; /* Center text */
+}
+
+input[type="file"]::file-selector-button {
+    display: none;
+}
+
+/* Submit button styling */
+input[type="submit"] {
+    display: inline-block;
+    padding: 0.75em 2em;
+    background-color: #421f44;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 1em 0;
+}
+
+input[type="submit"]:hover,
+input[type="file"]:hover {
+    background-color: #421f44;
+}
+
+#processingMessage {
+    font-style: italic;
+    color: #ccc;
+    margin-top: 1em;
+}
+
+/* Styling for the result page */
+.result {
+    font-size: 1.2em;
+    background-color: rgba(0, 0, 0, 0);
+    padding: 1.5em;
+    color: #fff;
+    border-radius: 10px;
+    margin-top: 1.5em;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0);
+}
+
+.back-button {
+    display: inline-block;
+    padding: 0.75em 1.5em;
+    background-color: #421f44;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1.5em;
+}
+
+.back-button:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+/* Footer styles */
+footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1em;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    color: #ccc;
+    font-size: 0.9em;
+}
